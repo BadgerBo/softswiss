@@ -1,0 +1,36 @@
+---
+version: '3.3'
+
+x-common-env: &cenv
+  POSTGRES_DB: main
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: password
+  CHANGELOG_FILE: changelog.sql  
+
+services:
+    db:
+        image: postgres
+        environment:
+            <<: *cenv
+        ports:
+            - 5432:5432
+    init-db:
+        build:
+           context: ./db
+        environment:
+            <<: *cenv
+        volumes:
+            - ./db/migrations/changelog.sql:/liquibase/changelog.sql
+        depends_on:
+            db:
+                condition: service_started
+    app:
+        build:
+            context: ./app
+        environment:
+            <<: *cenv
+        ports:
+            - 80:5000
+        depends_on:
+            init-db:
+                condition: service_completed_successfully
