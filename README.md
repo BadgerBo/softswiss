@@ -31,6 +31,7 @@ git clone https://github.com/BadgerBo/softswiss
 ```
 docker-compose up -d
 ```
+После выполнения команды ожидаемым успешным результатом считается открытие страницы http://softswiss.local с текстом "Hello..." (и код ответа 200)
 
 ## Остановка демонстрационного стенда
 
